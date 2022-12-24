@@ -1,0 +1,7 @@
+{
+	"name": "Foundation",
+	"version": "0.0.1",
+	"description": "",
+	"isFramework": true,
+	"main": "tests/tests.j"
+}
