@@ -1,5 +1,6 @@
 
 #import "CTObject.j"
+#import "CTNumber.j"
 
 @implementation CTArray : CTObject
 

@@ -1,4 +1,8 @@
-
+/**
+*   CTObject
+*   The root object
+*
+*/
 @implementation CTObject
 {
     id isa; 
@@ -31,10 +35,6 @@
     return class_createInstance(self); 
 }
 
-+ (id)allocWithCoder:(CPCoder)aCoder
-{
-    return [self alloc]; 
-}
 
 /*!
     Initializes the receiver
@@ -255,7 +255,7 @@
     @return the selector's method signature
  */
 
-- (CPMethodSignature)methodSignatureForSelector:(SEL)aSelector
+- (CTMethodSignature)methodSignatureForSelector:(SEL)aSelector
 {
     // FIXME: We need to implement method signatures.
     return nil; 
@@ -266,12 +266,12 @@
     Returns a human readable string describing the receiver
  */
 
-- (CPString)description
+- (String)description
 {
-    return "<" + class_getName(isa) + " 0x" + [CPString stringWithHash:[self UID]] + ">"; 
+    return "<" + class_getName(isa) + " 0x" + [self UID]+ ">"; 
 }
 
-+ (CPString)description
++ (CTString)description
 {
     return class_getName(self.isa); 
 }
@@ -345,73 +345,6 @@
     ); 
 }
 
-    // Archiving
-/*!
-    Subclasses override this method to possibly substitute
-    the unarchived object with another. This would be
-    useful if your program utilizes a
-    <a href="http://en.wikipedia.org/wiki/Flyweight_pattern">flyweight pattern</a>.
-    The method is called by CPCoder.
-    @param aCoder the coder that contained the receiver's data
- */
-
-- (id)awakeAfterUsingCoder:(CPCoder)aCoder
-{
-    return self; 
-}
-
-/*!
-    Can be overridden by subclasses to substitute a different class to represent the receiver for keyed archiving.
-    @return the class to use. A \c nil means to ignore the method result.
- */
-
-- (Class)classForKeyedArchiver
-{
-    return [self classForCoder]; 
-}
-
-/*!
-    Can be overridden by subclasses to substitute a different class to represent the receiver during coding.
-    @return the class to use for coding
- */
-
-- (Class)classForCoder
-{
-    return [self class]; 
-}
-
-/*!
-    Can be overridden by subclasses to substitute another object during archiving.
-    @param anArchiver that archiver
-    @return the object to archive
- */
-
-- (id)replacementObjectForArchiver:(CPArchiver)anArchiver
-{
-    return [self replacementObjectForCoder:anArchiver]; 
-}
-
-/*!
-    Can be overridden by subclasses to substitute another object during keyed archiving.
-    @param anArchive the keyed archiver
-    @return the object to archive
- */
-
-- (id)replacementObjectForKeyedArchiver:(CPKeyedArchiver)anArchiver
-{
-    return [self replacementObjectForCoder:anArchiver]; 
-}
-
-/*!
-    Can be overridden by subclasses to substitute another object during coding.
-    @param aCoder the coder
-    @return the object to code
- */
-
-- (id)replacementObjectForCoder:(CPCoder)aCoder
-{
-    return self; 
-}
 
 /*!
     Sets the class version number.
@@ -437,7 +370,7 @@
     Returns the class name
  */
 
-- (CPString)className
+- (String)className
 {
     // FIXME: Why doesn't this work in KVO???
     // return class_getName([self class]);
@@ -454,7 +387,7 @@
     return [self UID]; 
 }
 
-- (CPString)UID
+- (String)UID
 { 
     if (typeof self._UID === "undefined") { 
         self._UID = objj_generateObjectUID();    
@@ -490,75 +423,3 @@
     return isa.super_class; 
 }
 @end
-
-function CPDescriptionOfObject(anObject, maximumRecursionDepth)
-{
-    if (anObject === nil)
-        return "nil"; 
-
-    if (anObject === undefined)
-        return "undefined"; 
-
-    if (anObject === window)
-        return "window"; 
-
-    if (maximumRecursionDepth === 0)
-        return "..."; 
-
-    if (anObject.isa)
-    {
-        if ([anObject isKindOfClass:CPString])
-            return '@"' + [anObject description] + '"'; 
-
-        if ([anObject respondsToSelector:@selector(_descriptionWithMaximumDepth:)])
-            return [anObject _descriptionWithMaximumDepth:maximumRecursionDepth !== undefined ? maximumRecursionDepth - 1 : maximumRecursionDepth]; 
-
-        return [anObject description]; 
-    }
-
-    if (typeof anObject !== "object")
-        return String(anObject); 
-
-    var properties = [], desc; 
-
-    for(var property in anObject)
-        if (anObject.hasOwnProperty(property))
-            properties.push(property); 
-
-    properties.sort(); 
-    
-    if (properties.length === 2 && anObject.hasOwnProperty("width") && anObject.hasOwnProperty("height"))
-        desc = [CPString stringWithFormat:"CGSize: (%f, %f)", anObject.width, anObject.height]; 
-    else
-    if (properties.length === 2 && anObject.hasOwnProperty("x") && anObject.hasOwnProperty("y"))
-        desc = [CPString stringWithFormat:"CGPoint: (%f, %f)", anObject.x, anObject.y]; 
-    else
-    if (properties.length === 2 && anObject.hasOwnProperty("origin") && anObject.hasOwnProperty("size"))
-        desc = [CPString stringWithFormat:"CGRect: (%f, %f), (%f, %f)", anObject.origin.x, anObject.origin.y, anObject.size.width, anObject.size.height]; 
-    else
-    if (properties.length === 4 && anObject.hasOwnProperty("top") && anObject.hasOwnProperty("right") && anObject.hasOwnProperty("bottom") && anObject.hasOwnProperty("left"))
-        desc = [CPString stringWithFormat:"CGInset: { top:%f, right:%f, bottom:%f, left:%f }", anObject.top, anObject.right, anObject.bottom, anObject.left]; 
-    else
-    {
-        desc = "{"; 
-        
-        for (var i = 0;i < properties.length;++i)
-        {
-            if (i === 0)
-                desc += "\n"; 
-
-            var value = anObject[properties[i]], valueDescription = ((CPDescriptionOfObject(value, maximumRecursionDepth !== undefined ? maximumRecursionDepth - 1 : maximumRecursionDepth)).split("\n")).join("\n    "); 
-
-            desc += "b" + properties[i] + ": " + valueDescription; 
-            
-            if (i < properties.length - 1)
-                desc += ",\n"; 
-            else
-                desc += "\n"; 
-        }
-
-        desc += "}"; 
-    }
-
-    return desc; 
-}

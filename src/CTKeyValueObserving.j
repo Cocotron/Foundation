@@ -1,81 +1,70 @@
 #import "CTObject.j"
 #import "CTArray.j"
+#import "CTNumber.j"
+#import "CTRunLoop.j"
 
 @implementation CTObject (KVO)
  
--(void) addObserver:(id)anObject forKey:(String)aKey action:(Selector)aSelector {
+-(void) addObserver:(id)anObserver forKey:(String)aKey action:(Selector)aSelector {
     
     if (!anObserver || !aKey)
         return;
-
-    if(!self._$observers) {
-        self._$observers = {};
-    }
-    if(!self._$observers[aKey]) {
-        self._$observers[aKey] = [];
-    }
-
-    self._$observers.push({
-        target: anObject,
-        action:aSelector,
-        keyPath: aKey,
-        cachedValue: [self valueForKey:aKey]
-    });
+   
+    [[CTRunLoop mainRunLoop] _addObserver:{
+        target: anObserver,
+        action: aSelector,
+        key: aKey,
+        previousValue: [self valueForKey:aKey],
+        observed: self 
+    }];
 }
 
--(void) addObserver:(id)anObject forKeyPath:(String)aPath action:(Selector)aSelector {
+-(void) addObserver:(id)anObserver forKeyPath:(String)aPath action:(Selector)aSelector {
 
-    if (!anObserver || !aKey)
+    if (!anObserver || !aPath)
         return;
     
     const firstDotIndex = aPath.indexOf(".");
     
     if(firstDotIndex < 0) {
-        return [self addObserver:anObject forKey:aPath action:aSelector];
+        return [self addObserver:anObserver forKey:aPath action:aSelector];
     }
 
+    
     const firstKeyComponent = aPath.substring(0, firstDotIndex),
         remainingKeyPath = aPath.substring(firstDotIndex + 1),
         value = [self valueForKey:firstKeyComponent];
 
-    [value addObserver:anObject forKeyPath:remainingKeyPath action:aSelector];    
+    [value addObserver:anObserver forKeyPath:remainingKeyPath action:aSelector];    
 
 }
 
--(void) removeObserver:(id)anObject forKey:(String)aKey {
+-(void) removeObserver:(id)anObserver forKey:(String)aKey {
     if (!anObserver || !aKey)
         return;
 
-    if(self._$observers) {
-        if(self._$observers[aKey]) {
-            [self._$observers[aKey] removeObject:anObject];
-        }
-
-        if(self._$observers[aKey].length === 0) {
-            delete self._$observers[aKey];
-        }
-
-        if(Object.keys(self._$observers).length === 0) {
-            delete self._$observers;
-        }
-    }    
+        [[CTRunLoop mainRunLoop] _removeObserver:{
+            target: anObserver, 
+            key: aKey, 
+            observed: self 
+        }];
 }
 
--(void) removeObserver:(id)anObject forKeyPath:(String)aPath {
+-(void) removeObserver:(id)anObserver forKeyPath:(String)aPath {
 
     if (!anObserver || !aPath)
         return;
 
     const firstDotIndex = aPath.indexOf(".");
     if(firstDotIndex < 0) {
-        return [removeObserver:anObject forKey:aPath];
+        return [self removeObserver:anObserver forKey:aPath];
     }
 
     const firstKeyComponent = aPath.substring(0, firstDotIndex),
         remainingKeyPath = aPath.substring(firstDotIndex + 1),
         value = [self valueForKey:firstKeyComponent];
 
-    [value removeObserver:anObject forKeyPath:remainingKeyPath];
+    [value removeObserver:anObserver forKeyPath:remainingKeyPath];
 }
 
 @end
