@@ -466,14 +466,16 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 
 ,["id","CPString"]), new objj_method(sel_getUid("setValue:forKey:"), function $null__setValue_forKey_(self, _cmd, aValue, aKey)
 {
-    var capitalizedKey = aKey.charAt(0).toUpperCase() + aKey.substr(1),
+    var capitalizedKey = aKey.charAt(0).toUpperCase() + aKey.substring(1),
         _selector = sel_getUid("set" + capitalizedKey + ":");
     if ((self.isa.method_msgSend["respondsToSelector:"] || _objj_forward)(self, (self.isa.method_dtable["respondsToSelector:"], "respondsToSelector:"), _selector))
     {
         (self.isa.method_msgSend["performSelector:withObject:"] || _objj_forward)(self, (self.isa.method_dtable["performSelector:withObject:"], self.isa.method_dtable["performSelector:withObject:"], "performSelector:withObject:"), _selector, aValue);
-        return;
     }
-    self[aKey] = aValue;
+    else
+    {
+        self[aKey] = aValue;
+    }
 }
 
 ,["void","id","String"]), new objj_method(sel_getUid("setValue:forKeyPath:"), function $null__setValue_forKeyPath_(self, _cmd, aValue, aKeyPath)
