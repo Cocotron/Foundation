@@ -15,9 +15,8 @@ const MAX_DAYS_IN_MONTH = 32;
 
 }
 
-
--(id) init {
-      
+-(id) init 
+{
       self = [super init];
       if( self ) {
         dayOfWeekNames = [];
@@ -41,24 +40,29 @@ const MAX_DAYS_IN_MONTH = 32;
      return self; 
 }
 
--(void) setCurrentMonth:(CTDate)date {
+-(void) setCurrentMonth:(CTDate)date 
+{
     [_currentMonth setMonth:[date month]];
     [_currentMonth setYear:[date year]];
 }
 
--(CTDate) currentMonth {
+-(CTDate) currentMonth 
+{
     return _currentMonth;
 }
 
--(CTArray) monthNames {
+-(CTArray) monthNames 
+{
     return monthOfYearNames;
 }
 
--(CTArray) dayNames {
+-(CTArray) dayNames 
+{
     return dayOfWeekNames;
 }
 
--(CTDate) currentFirstDayOfFirstWeek {
+-(CTDate) currentFirstDayOfFirstWeek 
+{
   let wkDayOfMonth1st = [_currentMonth day];
   let start = 0;
   if (wkDayOfMonth1st === start) {

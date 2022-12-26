@@ -7,7 +7,7 @@ var _$KVObservers = {};
 
 @implementation CTObject (KVO)
  
--(void) addObserver:(id)anObserver forKey:(String)aKey action:(Selector)aSelector {
+-(void) addObserver:(id)anObserver forKey:(String)aKey action:(SEL)aSelector {
     
     if (!anObserver || !aKey)
         return;
@@ -28,7 +28,7 @@ var _$KVObservers = {};
     });   
 }
 
--(void) addObserver:(id)anObserver forKeyPath:(String)aPath action:(Selector)aSelector {
+-(void) addObserver:(id)anObserver forKeyPath:(String)aPath action:(SEL)aSelector {
 
     if (!anObserver || !aPath)
         return;

@@ -7,3 +7,4 @@
 //#import "CTDateTest.j"
 #import "CTIndexSetTest.j"
 #import "CTTimerTest.j"
+#import "CTNotificationTest.j"
