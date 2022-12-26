@@ -52,27 +52,6 @@
 
 
 
-/*!
-    Makes a deep copy of the receiver. The copy should be functionally equivalent to the receiver.
-    @return the copy of the receiver
- */
-
-- (id)copy
-{
-    return self; 
-}
-
-/*!
-    Creates a deep mutable copy of the receiver.
-    @return the mutable copy of the receiver
- */
-
-- (id)mutableCopy
-{
-    return [self copy]; 
-}
-
-
     // Identifying classes
 /*!
     Returns the Class object for this class definition.
@@ -145,16 +124,6 @@
 + (BOOL)isMemberOfClass:(Class)aClass
 {
     return self === aClass; 
-}
-
-/*!
-    Determines whether the receiver's root object is a proxy.
-    @return \c YES if the root object is a proxy
- */
-
-- (BOOL)isProxy
-{
-    return NO; 
 }
 
     // Testing class functionality
@@ -447,5 +416,29 @@
     }
     return self;
 }
+
+/*!
+    Makes a deep copy of the receiver. The copy should be functionally equivalent to the receiver.
+    @return the copy of the receiver
+ */
+
+ - (id)copy
+ {
+        if(typeof self !== "object") {
+            return self; 
+        }
+        const props = {},
+        ivar_list = self.isa.ivar_list;
+        for(const ivar of ivar_list) {
+            const value = [self valueForKey:ivar.name]; 
+            if(value.isa) {
+                props[ivar.name] = [value copy];  
+            }
+            else {
+                props[ivar.name] = value;    
+            }
+        }
+        return [[self.isa alloc] initWithProps:props]; 
+ }
 
 @end

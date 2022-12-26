@@ -55,7 +55,7 @@ var _$CTNotificationDefaultCenter = nil;
 {
     const uid = [anObserver UID];
     if (!aNotificationName) {
-        const notifications = Object.keys(_objectObservers);
+        const notifications = Object.values(_objectObservers);
         for(const notif of notifications) {
             delete notif[uid];
         }
@@ -69,7 +69,7 @@ var _$CTNotificationDefaultCenter = nil;
                 else {
                     const observerations = _objectObservers[aNotificationName][uid];
                     const objectUID = [anObject UID];
-                    const foundItem = nil;
+                    let foundItem = nil;
                     for(const obs of observerations) {
                         if([obs.source UID] === objectUID) {
                             foundItem = obs;
@@ -125,6 +125,15 @@ var _$CTNotificationDefaultCenter = nil;
 -(void) postNotificationName:(String)aName  
 {
     [self postNotification:[CTNotification notificationWithName:aName object:nil userInfo:nil]];
+}
+
+-(void) postNotificationName:(String)aName userInfo:(Object) userInfo
+{
+    [self postNotification:[CTNotification notificationWithName:aName object:nil userInfo:userInfo]];
+}
+
+-(id) copy {
+    return self;
 }
 
 @end

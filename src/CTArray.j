@@ -72,10 +72,22 @@
     self.splice.call(self, 0, self.length);
 }
 
-
-
 -(Integer) count {
     return self.length; 
+}
+
+-(CTArray) copy 
+{
+    let theCopy = [];
+    for(const item of self) {
+        if(item.isa) {
+            theCopy.push([item copy]);
+        }
+        else {
+            theCopy.push(item);
+        }
+    }
+    return self;
 }
 
 @end

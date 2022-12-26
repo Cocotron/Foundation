@@ -8,7 +8,7 @@
     BOOL _repeats;
     BOOL _invalid; 
 
-    Object _nativeTimer; 
+    Timer _nativeTimer; 
 
 }
 

@@ -27,7 +27,7 @@
 +(id) dateWithMonth:(Integer)month day:(Integer)day year:(Integer)year {
     var date = [CTDate date];
 
-    [date resetTimeOfDay];
+    [date resetTime];
     [date setYear:year];
     [date setMonth:month];
     [date setDate:day];
@@ -101,16 +101,20 @@
     Resets the date to midnight
 */
 -(void) resetTime {
-    const mSec = date.getTime();
-    let offset = msec % 1000;
+    const mSec = self.getTime();
+    let offset = mSec % 1000;
     // Normalize if time is before epoch
     if (offset < 0) {
       offset += 1000;
     }
-    self.setTime(msec - offset);
+    self.setTime(mSec - offset);
     self.setHours(0);
     self.setMinutes(0)
     self.setSeconds(0);
+}
+
+-(CTDate) copy {
+    return copyDate(self);
 }
 
 @end

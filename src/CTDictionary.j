@@ -47,6 +47,20 @@
     return self.size.call(self);
 }
 
+-(CTSet) copy 
+{
+    const theCopy = new Map();
+    for(const [key, value] of self) {
+        if(value.isa) {
+            theCopy.set(key, [value copy]);
+        }
+        else {
+            theCopy.set(key, value);
+        }
+    }
+    return theCopy;
+}
+
 @end
 
 Map.prototype.isa = CTDictionary;

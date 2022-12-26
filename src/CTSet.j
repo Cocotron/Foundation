@@ -41,6 +41,20 @@
     return self.size;
 }
 
+-(CTSet) copy 
+{
+    const theCopy = new Set();
+    for(const item of self) {
+        if(item.isa) {
+            theCopy.add([item copy]);
+        }
+        else {
+            theCopy.add(item);
+        }
+    }
+    return theCopy;
+}
+
 
 @end
 

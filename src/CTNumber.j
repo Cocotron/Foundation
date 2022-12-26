@@ -6,7 +6,7 @@ var _$CTNumberUIDs    = {};
 
 @implementation CTNumber : CTObject
 
-+ (id)alloc
++ (id) alloc
 {
     var result = new Number();
     result.isa = [self class];

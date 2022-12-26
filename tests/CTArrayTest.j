@@ -5,7 +5,7 @@ let array = [CTArray arrayWithObjects:@"One", @"Two", @"Three"];
 
 [array addObject:"Hello2"];
 
-[array insertObject:"Dog" at:2];
+[array insertObject:"Dog" atIndex:2];
 
 
 [array addObject:nil];

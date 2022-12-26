@@ -80,6 +80,20 @@ class _$CountedSet extends Set {}
     return _counts[UID];
 }
 
+-(CTSet) copy 
+{
+    const theCopy = new _$CountedSet();
+    for(const item of self) {
+        if(item.isa) {
+            theCopy.add([item copy]);
+        }
+        else {
+            theCopy.add(item);
+        }
+    }
+    return theCopy;
+}
+
 @end
 
 _$CountedSet.prototype.isa = CTCountedSet;
