@@ -1,7 +1,9 @@
 #import "CTObject.j"
 #import "CTArray.j"
 #import "CTNumber.j"
-#import "CTRunLoop.j"
+
+
+var _$KVObservers = {};
 
 @implementation CTObject (KVO)
  
@@ -9,14 +11,21 @@
     
     if (!anObserver || !aKey)
         return;
-   
-    [[CTRunLoop mainRunLoop] _addObserver:{
+
+    const uid = [self UID];
+    if(!_$KVObservers[uid]) {
+        _$KVObservers[uid] = {};
+    }
+    if(!_$KVObservers[uid][aKey]) {
+        _$KVObservers[uid][aKey] = [];
+    }
+    _$KVObservers[uid][aKey].push({
         target: anObserver,
         action: aSelector,
         key: aKey,
         previousValue: [self valueForKey:aKey],
-        observed: self 
-    }];
+        observed: self     
+    });   
 }
 
 -(void) addObserver:(id)anObserver forKeyPath:(String)aPath action:(Selector)aSelector {
@@ -30,7 +39,6 @@
         return [self addObserver:anObserver forKey:aPath action:aSelector];
     }
 
-    
     const firstKeyComponent = aPath.substring(0, firstDotIndex),
         remainingKeyPath = aPath.substring(firstDotIndex + 1),
         value = [self valueForKey:firstKeyComponent];
@@ -40,14 +48,27 @@
 }
 
 -(void) removeObserver:(id)anObserver forKey:(String)aKey {
+    
     if (!anObserver || !aKey)
         return;
 
-        [[CTRunLoop mainRunLoop] _removeObserver:{
-            target: anObserver, 
-            key: aKey, 
-            observed: self 
-        }];
+    const uid = [self UID];
+    if(_$KVObservers[uid]) {
+        const array = _$KVObservers[uid][aKey]
+        if(array) {
+            let foundItem = Nil;
+            for(const item of array) {
+                const target = item.target;
+                if([target UID] === [anObserver UID]) {
+                    foundItem = item;
+                    break;
+                }
+            }
+            if(foundItem) {
+                [array removeObject:foundItem];
+            }
+        }
+     }   
 }
 
 -(void) removeObserver:(id)anObserver forKeyPath:(String)aPath {

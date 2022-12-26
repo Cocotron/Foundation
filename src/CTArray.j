@@ -27,7 +27,20 @@
 
 -(void) addObject:(id)anObject 
 {
-    self.push(anObject);
+    self.push.call(self, anObject);
+}
+
+-(void) insertObject:(id)anObject atIndex:(Integer)anIndex 
+{
+    self.splice.call(self, anIndex, 0, anObject);
+}
+
+- (void)replaceObjectAtIndex:(Integer)anIndex withObject:(id)anObject
+{
+    if (anIndex >= self.length || anIndex < 0)
+        throw new Error(`Out of range error: ${anIndex}`);
+
+    self[anIndex] = anObject;
 }
 
 -(void) removeObject:(id)anObject
@@ -42,15 +55,24 @@
     self.splice.call(self, anIndex, 1);
 }
 
--(void) insertObject:(id)anObject at:(Integer)anIndex 
+-(void) removeObjectsInRange:(CTRange)aRange {
+    if (aRange.location < 0 || CPMaxRange(aRange) > self.length)
+        throw new Error(_cmd + " aRange out of bounds");
+
+    self.splice.call(self, aRange.location, aRange.length);
+}
+
+- (void)removeLastObject
 {
-    self.splice.call(self, anIndex, 0, anObject);
+    self.pop.call(self);
 }
 
 -(void) removeAllObjects 
 {
     self.splice.call(self, 0, self.length);
 }
+
+
 
 -(Integer) count {
     return self.length; 

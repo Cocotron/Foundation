@@ -1,7 +1,7 @@
 
 #import "CTObject.j"
 
-var CPStringUIDs = {};
+var _$CPStringUIDs = {};
 
 @implementation CTString : CTObject
  
@@ -80,12 +80,12 @@ var CPStringUIDs = {};
 
 - (CPString)UID
 {
-    var UID = CPStringUIDs[self];
+    var UID = _$CPStringUIDs[self];
 
     if (!UID)
     {
         UID = objj_generateObjectUID();
-        CPStringUIDs[self] = UID;
+        _$CPStringUIDs[self] = UID;
     }
 
     return UID + "";

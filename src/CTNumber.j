@@ -1,12 +1,10 @@
 #import "CTObject.j"
 
-
 #define CAST_TO_INT(x) ((x) >= 0 ? Math.floor((x)) : Math.ceil((x)))
 
-var CTNumberUIDs    = {};
+var _$CTNumberUIDs    = {};
 
 @implementation CTNumber : CTObject
-
 
 + (id)alloc
 {
@@ -30,12 +28,12 @@ var CTNumberUIDs    = {};
 
 - (String)UID
 {
-    var UID = CTNumberUIDs[self];
+    var UID = _$CTNumberUIDs[self];
 
     if (!UID)
     {
         UID = objj_generateObjectUID();
-        CTNumberUIDs[self] = UID;
+        _$CTNumberUIDs[self] = UID;
     }
 
     return UID + "";

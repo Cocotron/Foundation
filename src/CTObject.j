@@ -1,3 +1,6 @@
+
+#define _IS_NUMERIC(n) (!isNaN(parseFloat(n)) && isFinite(n))
+
 /**
 *   CTObject
 *   The root object
@@ -26,6 +29,7 @@
     return [[self alloc] init]; 
 }
 
+ 
 /*!
     Allocates a new instance of the receiving class
  */
@@ -45,6 +49,8 @@
 {
     return self; 
 }
+
+
 
 /*!
     Makes a deep copy of the receiver. The copy should be functionally equivalent to the receiver.
@@ -422,4 +428,24 @@
 {
     return isa.super_class; 
 }
+
+@end
+
+
+@implementation CTObject (Props)
+ 
+/**
+    Use props to unfreeze an object from an XML archive
+*/
+-(id) initWithProps:(Object)props {
+    self = [self init];
+    if( self ) {
+        const keys = Object.keys(props);
+        for(const key of keys) {
+            [self setValue:props[key] forKeyPath:key];
+        }
+    }
+    return self;
+}
+
 @end

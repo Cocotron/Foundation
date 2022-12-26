@@ -1,6 +1,7 @@
 #import "../src/CTKeyValueCoding.j";
 #import "../src/CTKeyValueObserving.j"
 #import "../src/CTNumber.j"
+#import "../src/CTRunLoop.j"
  
 @implementation Pet : CTObject
 {
@@ -38,10 +39,11 @@
 @end
 
 
-var p = [Person new];
+var p = [Person withProps:{
+    age: 20
+}];
  
-p.pet.name = @"Carter";
-p.age = 20;
+p.pet.name = @"Carter"; 
 
 console.log([p respondsToSelector:@"age"]);
 alert([p valueForKeyPath:@"pet.name"])
