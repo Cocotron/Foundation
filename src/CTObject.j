@@ -316,8 +316,8 @@
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
 {
-    throw new Error(class_isMetaClass(isa) ? "+" : "-" + " [" + [self className] + " " + aSelector + "] unrecognized selector sent to " + "class " + class_getName(isa)
-    ); 
+    throw new Error(class_isMetaClass(isa) ? "+" : ("-" + " [" + [self className] + " " + aSelector + "] unrecognized selector sent to " + 
+    "class " + class_getName(isa))); 
 }
 
 

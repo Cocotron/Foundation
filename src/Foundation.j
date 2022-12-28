@@ -1,5 +1,5 @@
 #import "CTObject.j"
-#import "CTOKeyValueCoding.j"
+#import "CTKeyValueCoding.j"
 #import "CTKeyValueObserving.j"
 #import "CTBundle.j"
 #import "CTTimer.j"

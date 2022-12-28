@@ -28,7 +28,7 @@ const MAX_DAYS_IN_MONTH = 32;
             let dayOfWeek = date.getDay();
             dayOfWeekNames.push(date.toLocaleString("default", {
                 weekday: "short",
-            });
+            }));
         }
         // finding month names
         date.setDate(1);

@@ -1,0 +1,17 @@
+
+
+(function(){
+var owner;
+<> 
+    //Objects 
+    <>
+        {this.v1 = <CTArray />}
+        {owner = <AController   />}
+    </>
+    //connections
+    <>
+        <_$outlet value={this.v1} object={owner} path={"anArray"} />
+    </>
+</>
+return owner;
+})();

@@ -598,8 +598,6 @@ var assumedPositionOfIndex = function(ranges, anIndex)
 
 @end
 
-console.log(CTIndexSet)
-
 CTIndexSet.allocator.prototype[Symbol.iterator] = function() {
     let values = [this getIndexesInRange:nil];
     let index = 0;

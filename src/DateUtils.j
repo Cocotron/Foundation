@@ -140,7 +140,7 @@ function setToFirstDayOfMonth(date) {
    * @return is the day of week a weekend?
    */
 
-isWeekend(dayOfWeek) {
+function isWeekend(dayOfWeek) {
     return dayOfWeek === 6 || dayOfWeek === 0;
 }
   

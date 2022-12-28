@@ -32,6 +32,19 @@ var _$MainBundle = nil;
      throw new Error(`No resource with name "${resourceName}" found in main bundle.`);
 }
 
+-(BOOL) loadCibNamed:(String)cibName owner:(id)anObject {
+    if(__$objj_bundle) {
+        if(__$objj_bundle.cibs[cibName]){
+           const code =  __$objj_bundle.cibs[cibName];
+           if(code) {
+            @deref(anObject) = eval(code);  
+            return YES;
+           } 
+        };
+     }
+     return NO;
+}
+
 -(id) copy 
 {
     return self; 
