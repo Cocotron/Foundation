@@ -15,10 +15,10 @@ var _$MainBundle = nil;
 -(void) injectStyles 
 {
     if(__$objj_bundle) {
-        const stylesArray = __$objj_bundle.styles;
-        for(const style of stylesArray) {
+        const styles = Object.values(__$objj_bundle.styles);
+        for(const style of styles) {
             objj_styleInject(style);      
-        } 
+        }  
     }
 }
 
@@ -38,11 +38,20 @@ var _$MainBundle = nil;
            const code =  __$objj_bundle.cibs[cibName];
            if(code) {
             @deref(anObject) = eval(code);  
+            if([anObject respondsToSelector:@selector(awakeFromCib)]){
+                [anObject performSelector:@selector(awakeFromCib)];
+            }
             return YES;
            } 
         };
      }
      return NO;
+}
+
+-(Object) info {
+    if(__$objj_bundle) {
+        return __$objj_bundle.info;
+    }
 }
 
 -(id) copy 
