@@ -38,10 +38,7 @@ var _$MainBundle = nil;
         if(__$objj_bundle.cibs[cibName]){
            const code =  __$objj_bundle.cibs[cibName];
            if(code) {
-            var owner = (@deref(anObject) = eval(code));  
-            if([owner respondsToSelector:@selector(awakeFromCib)]){
-                [owner performSelector:@selector(awakeFromCib)];
-            }
+            @deref(anObject) = eval(code);  
             return YES;
            } 
         };
