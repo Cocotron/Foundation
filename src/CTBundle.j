@@ -32,14 +32,15 @@ var _$MainBundle = nil;
      throw new Error(`No resource with name "${resourceName}" found in main bundle.`);
 }
 
--(BOOL) loadCibNamed:(String)cibName owner:(id)anObject {
+-(BOOL) loadCibNamed:(String)cibName owner:(id)anObject 
+{
     if(__$objj_bundle) {
         if(__$objj_bundle.cibs[cibName]){
            const code =  __$objj_bundle.cibs[cibName];
            if(code) {
-            @deref(anObject) = eval(code);  
-            if([anObject respondsToSelector:@selector(awakeFromCib)]){
-                [anObject performSelector:@selector(awakeFromCib)];
+            var owner = (@deref(anObject) = eval(code));  
+            if([owner respondsToSelector:@selector(awakeFromCib)]){
+                [owner performSelector:@selector(awakeFromCib)];
             }
             return YES;
            } 
@@ -48,7 +49,8 @@ var _$MainBundle = nil;
      return NO;
 }
 
--(Object) info {
+-(Object) info 
+{
     if(__$objj_bundle) {
         return __$objj_bundle.info;
     }

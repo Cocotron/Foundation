@@ -42,8 +42,6 @@ var _$CTNotificationDefaultCenter = nil;
         action: aSelector,
         source: anObject
      });
-
-     console.log(_objectObservers);
 }
 
 - (void)addObserver:(id)anObserver selector:(SEL)aSelector name:(String)aNotificationName
